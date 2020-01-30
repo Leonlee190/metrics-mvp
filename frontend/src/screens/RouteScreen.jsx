@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Toolbar from '@material-ui/core/Toolbar';
 import AppBar from '@material-ui/core/AppBar';
 import NavigateNextIcon from '@material-ui/icons/NavigateNext';
+import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Typography from '@material-ui/core/Typography';
 
@@ -35,7 +36,15 @@ const useStyles = makeStyles(theme => ({
     breadCrumbsWrapper : {
       padding: '1%',
       paddingRight: '0'
-    }
+    },
+  externalLink: {
+    color: 'rgba(0, 0, 0, 0.54)',
+    marginLeft: '5px'
+  },
+  externalLinkIcon: {
+    position: 'relative',
+    top: '5px'
+  }
 }));
 
 
@@ -60,7 +69,7 @@ function RouteScreen(props) {
   const agency = getAgency(agencyId);
 
   const breadCrumbs = (paths, classes) => {
-    const { breadCrumbStyling, darkLinks } = classes;
+    const { breadCrumbStyling, darkLinks, externalLink, externalLinkIcon } = classes;
 
     let link = {
       type:'ROUTESCREEN'
@@ -83,10 +92,25 @@ function RouteScreen(props) {
         const updatedPayload = Object.assign({...link.payload}, payload);
         link = Object.assign({...link}, {payload:updatedPayload});
         const {label, specialLabel}  = labels(param, path.title);
-        return hasNextValue
-        ? ( <Typography variant="subtitle1" key={label} className={`${breadCrumbStyling} ${darkLinks}`}> {specialLabel}  <Link to={link} className={`${breadCrumbStyling} ${darkLinks}`}>  {label}  </Link> </Typography> )
-        : ( <Typography variant="subtitle1" key={label} className={breadCrumbStyling}> {specialLabel} {label} </Typography> )
-    });
+
+        const officialInfoUrl = path.url
+
+        return (
+          <>
+            {
+              hasNextValue
+                ? ( <Typography variant="subtitle1" key={label} className={`${breadCrumbStyling} ${darkLinks}`}> {specialLabel}  <Link to={link} className={`${breadCrumbStyling} ${darkLinks}`}>  {label}  </Link> </Typography> )
+                : ( <Typography variant="subtitle1" key={label} className={breadCrumbStyling}> {specialLabel} {label} </Typography> )
+            }
+            {
+              officialInfoUrl && (
+                <a href={officialInfoUrl} target="_blank" rel="noopener noreferrer" className={externalLink}>
+                  <OpenInNewIcon className={externalLinkIcon}/>
+                </a> )
+            }
+          </>
+        )
+      });
   }
 
   const selectedRoute =
