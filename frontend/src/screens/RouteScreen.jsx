@@ -39,7 +39,8 @@ const useStyles = makeStyles(theme => ({
     },
   externalLink: {
     color: 'rgba(0, 0, 0, 0.54)',
-    marginLeft: '5px'
+    marginLeft: '5px',
+    display: 'inline-block'
   },
   externalLinkIcon: {
     position: 'relative',
